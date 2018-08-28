@@ -8,15 +8,15 @@ namespace Game
     {   
         public static Camera MainCamera;
         public static float Multiplier = 1f;
-        public static int Score 
+        public static long Score 
         {
             get { return score; }
         }
-        public static void AddPoints(int points)
+        public static void AddPoints(long points)
         {
-            score = score + (int)(points * Multiplier);
+            score = score + (long)(points * Multiplier);
         }
-        private static int score = 0;
+        private static long score = 0;
 
         [SerializeField] private SpaceController spaceControllerPrefab;
         [SerializeField] private GameScreen gameScreenPrefab;

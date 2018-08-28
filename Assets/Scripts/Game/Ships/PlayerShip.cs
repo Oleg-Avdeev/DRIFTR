@@ -5,7 +5,9 @@ namespace Game
 {
     public class PlayerShip : Ship
     {        
-
+        [SerializeField] private GameObject trailRenderer;
+        private bool jumped;
+        private float waitJump;
 
         protected override void UpdateState()
         {
@@ -24,6 +26,41 @@ namespace Game
                 GameController.Multiplier += 0.01f;
             }
         }
+
+        // private void FixPosition()
+        // {
+        //     if (jumped)
+        //     {
+        //         if (waitJump < Time.fixedTime)
+        //         {
+        //             jumped = false;
+        //             trailRenderer.SetActive(true);
+        //         }
+        //     }
+
+        //     if (transform.localPosition.x < -150)
+        //         JumpTo(x: 150);
+
+        //     if (transform.localPosition.x > 150)
+        //         JumpTo(x: -150);
+
+        //     if (transform.localPosition.y < -150)
+        //         JumpTo(y: 150);
+
+        //     if (transform.localPosition.y > 150)
+        //         JumpTo(y: -150);
+        // }
+
+        // private void JumpTo(float x = 0, float y = 0)
+        // {
+        //     if (x == 0) x = transform.localPosition.x;
+        //     if (y == 0) y = transform.localPosition.y;
+        //     transform.localPosition = new Vector3(x,y,transform.localPosition.z);
+
+        //     trailRenderer.SetActive(false);
+        //     jumped = true;
+        //     waitJump = Time.fixedTime + 0.5f;
+        // }
     }
 
 }

@@ -11,6 +11,11 @@ namespace UI
 
         [SerializeField] private Text scoreText;
         [SerializeField] private Text multiplierText;
+        
+        [SerializeField] private InputField playerNameInput;
+        [SerializeField] private Text endPlayerScore;
+        [SerializeField] private Text[] highScoreTexts;
+
         [SerializeField] private GameObject endGamePanel;
         [SerializeField] private GameObject startGamePanel;
 
@@ -34,11 +39,38 @@ namespace UI
             OnGameStarted?.Invoke();
         }
 
+        public void RestartGame()
+        {
+            if (!string.IsNullOrEmpty(playerNameInput.text))
+            {
+                Wazzapps.API.HighScores.HighscoresManager.Instance.SetHighscore(playerNameInput.text, GameController.Score);
+            }
+
+            StartGame();
+        }
+
         public void ShowEndGame()
         {
             scoreText.gameObject.SetActive(false);
             multiplierText.gameObject.SetActive(false);
             endGamePanel.SetActive(true);
+
+            endPlayerScore.text = GameController.Score.ToString();
+
+            Wazzapps.API.HighScores.HighscoresManager.Instance.GetHighscores((records) => {
+                for (int i = 0; i < highScoreTexts.Length; i++)
+                {
+                    if (i >= records.Count)
+                    {
+                        highScoreTexts[i].gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        highScoreTexts[i].gameObject.SetActive(true);
+                        highScoreTexts[i].text = records[i];
+                    }
+                }
+            });
         }
         
     }

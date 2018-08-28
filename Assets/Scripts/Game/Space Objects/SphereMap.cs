@@ -13,10 +13,17 @@ namespace Game.SpaceObjects
         public override void Initialize()
         {
             spheres = new List<Obstacle>();
+
             for ( int i = 0; i < 200; i++)
             {
-                float x = Random.Range(-100, 100);
+                float x = Random.Range(-100, 100); 
                 float y = Random.Range(-100, 100);
+                if (x*x + y*y < 400)
+                {
+                    i--;
+                    continue;
+                } 
+
                 spheres.Add(Instantiate(Sphere, new Vector3(x,y,0), Quaternion.identity, transform.parent));
                 spheres[i].transform.localScale = Random.Range(0,1)*Vector3.one;
                 spheres[i].SetRandomRotation();
@@ -46,9 +53,8 @@ namespace Game.SpaceObjects
             {
                 if (spheres[i].transform.localScale.x < 0.2f)
                 {
-                    spheres.RemoveAt(i);
                     Destroy(spheres[i].gameObject);
-                    i--;
+                    spheres.RemoveAt(i);
                 }
 
                 if (spheres[i].transform.localScale.x < 2.8f)

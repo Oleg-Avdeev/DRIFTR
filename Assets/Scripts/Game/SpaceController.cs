@@ -29,7 +29,7 @@ namespace Game
 
         public override void Initialize()
         {
-            player = Instantiate(playerShipPrefab, Vector3.left*120, Quaternion.identity, transform);
+            player = Instantiate(playerShipPrefab, Vector3.zero, Quaternion.identity, transform);
             Camera.main.GetComponent<CameraFollow>().setTarget(player.transform);
             player.OnDestroyed += () => { 
                 finishGame = true;
