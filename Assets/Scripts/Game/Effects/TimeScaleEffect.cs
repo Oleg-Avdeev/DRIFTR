@@ -20,12 +20,19 @@ namespace Game.Effects
             chromaticFx = effectStackProfile.chromaticAberration.settings;
             vigneteFx = effectStackProfile.vignette.settings;
             bloomFx = effectStackProfile.bloom.settings;
+            UpdateFX();
         }
 
         public void Activate()
         {
             targetTimeScale = 0.6f;
             slowDown = true;
+        }
+
+        public void Deactivate()
+        {
+            targetTimeScale = 1f;
+            slowDown = false;
         }
 
         public override void Update()

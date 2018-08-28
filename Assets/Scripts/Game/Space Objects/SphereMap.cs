@@ -5,10 +5,15 @@ namespace Game.SpaceObjects
 {
     public class SphereMap : ActiveObject
     {
+        [SerializeField] private Material planetMaterial;
 
         public Obstacle Sphere;
         private List<Obstacle> spheres;
         private int stoppedCounter = 0;
+
+        private float targetWhite = 0;
+        private float currentWhite = 0;
+        private bool changing;
 
         public override void Initialize()
         {
@@ -62,6 +67,8 @@ namespace Game.SpaceObjects
                     spheres[i].EnabledTurret = false;
                 }
             }
+
+            planetMaterial.SetFloat("_White",0);
         }
 
         public List<Vector3> SelectTurretPositions(int number)
@@ -78,14 +85,29 @@ namespace Game.SpaceObjects
             return list;
         }
 
-        public override void Update()
+        public void SetBossBattle(bool activate)
         {
-            
+            changing = true;
+            targetWhite = !activate ? 0 : 1;
+
+            for (int i = 0; i < spheres.Count; i++)
+            {
+                spheres[i].SetCollidable(!activate);
+            }
         }
 
-        void FixedUpdate()
+        public override void Update()
         {
-            transform.rotation *= Quaternion.Euler(0,1,0);
+            if (changing)
+            {
+                currentWhite = currentWhite + (targetWhite - currentWhite)/10f;
+                planetMaterial.SetFloat("_White",currentWhite);
+                
+                if (currentWhite >= 0.99f)
+                {
+                    changing = false;
+                }
+            }
         }
     }
 }

@@ -11,7 +11,10 @@ namespace Engine
         void Awake()
         {
             rootGameController = Instantiate(gameControllerPrefab, Vector3.zero, Quaternion.identity, transform) as Controller;
-            rootGameController?.Initialize();
+            if (rootGameController != null)
+            {
+                rootGameController.Initialize();
+            }
         }
 
         void Update()

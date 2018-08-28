@@ -6,6 +6,7 @@ namespace Game
 {
     public class GameController : Controller
     {   
+        public static Transform Root;
         public static Camera MainCamera;
         public static float Multiplier = 1f;
         public static long Score 
@@ -39,6 +40,8 @@ namespace Game
             spaceController = Instantiate(spaceControllerPrefab, Vector3.zero, Quaternion.identity, transform);
             spaceController.OnGameEnded += EndGame;
             spaceController?.Initialize();
+            
+            Root = spaceController.transform;
         }
 
         public void EndGame()

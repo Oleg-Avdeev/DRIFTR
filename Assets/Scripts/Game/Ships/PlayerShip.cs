@@ -17,7 +17,7 @@ namespace Game
             acceleration = (direction).normalized*maxAcceleration/100;
             if (Input.GetMouseButtonDown(0)) { Shoot(direction.normalized); }
 
-            if (speed.magnitude < maxSpeed*0.5f)
+            if ((speed.magnitude < maxSpeed*0.5f) && (Time.timeScale > 0.5f))
             {
                 GameController.Multiplier = 1f;
             }

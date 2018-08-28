@@ -75,6 +75,14 @@ namespace Game
 					Explode();
     	        }
     	    }
+			else if (other.gameObject.CompareTag("Ship"))
+    	    {
+    	        PlayerShip ship = other.GetComponent<PlayerShip>();
+				if (ship != null)
+				{
+					Explode();
+				}
+			}
     	}
     }
 }

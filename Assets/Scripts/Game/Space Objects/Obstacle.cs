@@ -8,6 +8,8 @@ namespace Game.SpaceObjects
         public bool Stopped;
         public bool EnabledTurret = true;
         [SerializeField] private Transform turretSlot;
+        private bool collidable = true;
+        
 
         public override void Update()
         {
@@ -24,8 +26,15 @@ namespace Game.SpaceObjects
             return turretSlot.position;
         }
 
+        public void SetCollidable(bool collidable)
+        {
+            this.collidable = collidable;
+        }
+
 		void OnTriggerEnter2D(Collider2D other)
     	{
+            if (!collidable) return;
+
     	    if (other.gameObject.CompareTag("Projectile"))
     	    {
     	        var projectile = other.GetComponent<Projectile>();

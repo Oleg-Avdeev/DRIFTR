@@ -15,6 +15,6 @@ public abstract class ActiveObject : Updatable
     public virtual void Initialize() { }
     public T Create<T>(T gameObject) where T : ActiveObject
     {
-        return Instantiate(gameObject, transform.localPosition, Quaternion.identity, transform.parent);
+        return Instantiate(gameObject, transform.position, Quaternion.identity, Game.GameController.Root);
     }
 }
