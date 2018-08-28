@@ -11,19 +11,19 @@ public class CertificateSHA1Fingerprint {
 
     public static string getCertificateSHA1Fingerprint()
     {
-#if UNITY_EDITOR
+// #if UNITY_EDITOR
         return "sha1_of_your_fingerprint";
-#elif UNITY_ANDROID
-        unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
-        unityContext = unityActivity.Call<AndroidJavaObject>("getApplicationContext");
+// #elif UNITY_ANDROID
+//         unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+//         unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
+//         unityContext = unityActivity.Call<AndroidJavaObject>("getApplicationContext");
 
-        customClass = new AndroidJavaClass("org.wazzapps.certificatesha1fingerprint.CertificateSHA1Fingerprint");
+//         customClass = new AndroidJavaClass("org.wazzapps.certificatesha1fingerprint.CertificateSHA1Fingerprint");
 
-        string result = customClass.CallStatic<string>("getCertificateSHA1Fingerprint", unityContext);
-        return result;
-#elif UNITY_IOS
+//         string result = customClass.CallStatic<string>("getCertificateSHA1Fingerprint", unityContext);
+//         return result;
+// #elif UNITY_IOS
 
-#endif
+// #endif
     }
 }
