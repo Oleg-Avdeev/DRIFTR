@@ -65,7 +65,7 @@ namespace Game
             GameController.Multiplier *= 1.1f;
             killedEnemies++;
 
-            if (killedEnemies == 1)
+            if (killedEnemies == 8)
             {
                 boss = Instantiate(bossTurretPrefabs[0], Vector3.zero, Quaternion.identity, transform);
                 boss.InitializeBoss(playerList, HandleEnemyDestruction);
