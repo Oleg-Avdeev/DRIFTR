@@ -27,10 +27,11 @@ namespace Game
         private int killedEnemies;
         private List<Ship> playerList;
         private bool bossBattle;
+        private int currentLevel = 0;
 
         private Turret chooseRandomTurret()
         {
-            return turretPrefabs[Random.Range(0, turretPrefabs.Length)];
+            return turretPrefabs[Random.Range(currentLevel, currentLevel + 3)];
         }
 
         public override void Initialize()
@@ -65,12 +66,12 @@ namespace Game
             GameController.Multiplier *= 1.1f;
             killedEnemies++;
 
-            if (killedEnemies == 8)
+            if (killedEnemies >= 8 && currentLevel == 0 && !bossBattle)
             {
                StartBossBattle(bossTurretPrefabs[0]);
             }
 
-            if (killedEnemies == 20)
+            if (killedEnemies >= 20 && currentLevel == 1 && !bossBattle)
             {
                StartBossBattle(bossTurretPrefabs[1]);
             }
@@ -86,10 +87,23 @@ namespace Game
             bossBattle = true;
             
             boss.OnDefeated += () => {
+                currentLevel++;
+
                 bossBattleEffect.Deactivate();
                 map.SetBossBattle(false);
                 bossBattle = false;    
                 player.StopPointingToBoss();
+                player.LevelUp(currentLevel);
+
+                map.AddRandomRotation();
+
+                var turretPositions = map.SelectTurretPositions(100);
+                for (int i = 0; i < turretPositions.Count; i++)
+                {
+                    enemies.Add(Instantiate(chooseRandomTurret(), turretPositions[i], Quaternion.identity, transform));
+                    enemies[enemies.Count - 1].UpdateShipList(playerList);
+                    enemies[enemies.Count - 1].OnDestroyed += HandleEnemyDestruction;
+                }
             };
         }
 

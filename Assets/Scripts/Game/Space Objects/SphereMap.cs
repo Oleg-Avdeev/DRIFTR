@@ -62,13 +62,21 @@ namespace Game.SpaceObjects
                     spheres.RemoveAt(i);
                 }
 
-                if (spheres[i].transform.localScale.x < 2.8f)
+                if (i < spheres.Count && spheres[i].transform.localScale.x < 2.8f)
                 {
                     spheres[i].EnabledTurret = false;
                 }
             }
 
             planetMaterial.SetFloat("_White",0);
+        }
+
+        public void AddRandomRotation()
+        {
+            for (int i = 0; i < spheres.Count; i++)
+            {
+                spheres[i].AddRandomRotation();
+            }
         }
 
         public List<Vector3> SelectTurretPositions(int number)

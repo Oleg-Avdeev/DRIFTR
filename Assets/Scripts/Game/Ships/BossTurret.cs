@@ -7,15 +7,17 @@ namespace Game
 {
     public class BossTurret : ActiveObject
     {
+        [SerializeField] private List<Turret> subTurrets;
+        [SerializeField] private float angleSpeed = 1;
 
         public event Action OnDefeated;
-
-        [SerializeField] private List<Turret> subTurrets;
-        private readonly Quaternion rotationMatrix = Quaternion.Euler(0,0,1);
+        private Quaternion rotationMatrix;
         private int defeatedTurrets = 0;
 
         public void InitializeBoss(List<Ship> ships, Action DestroyHandler)
         {
+            rotationMatrix = Quaternion.Euler(0,0,angleSpeed * Time.deltaTime);
+
             for (int i = 0; i < subTurrets.Count; i++)
             {
                 subTurrets[i].OnDestroyed += DestroyHandler;

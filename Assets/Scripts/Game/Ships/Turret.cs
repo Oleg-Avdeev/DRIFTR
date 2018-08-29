@@ -39,7 +39,7 @@ namespace Game
 
             if (target == null) return;
             shootDirection = ShootAheadVector(shootDirection, target);
-            Shoot(shootDirection);
+            Shoot(shootDirection, target.transform);
         }
 
         private void SelectTarget()

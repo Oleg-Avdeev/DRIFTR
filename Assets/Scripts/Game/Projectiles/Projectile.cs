@@ -10,8 +10,10 @@ namespace Game.Projectiles
 
         protected Vector3 direction;
         protected Fraction fraction;
+        protected Transform target;
 
-        public void SetValues(Vector3 direction, Fraction fraction)
+
+        public void SetValues(Vector3 direction, Fraction fraction, Transform target)
         {
             direction = speed * direction.normalized;
             float angle = Vector3.Angle(Vector3.up, direction) - 90;
@@ -20,11 +22,15 @@ namespace Game.Projectiles
 
             this.direction = direction;
             this.fraction = fraction;
+            this.target = target;
         }
+
+        protected virtual void LogicUpdate() {}
 
         public override void Update()
         {
-            transform.localPosition += direction * Time.timeScale;
+            LogicUpdate();
+            transform.localPosition += direction * Time.timeScale * Time.deltaTime;
             lifespan -= Time.deltaTime;
             if (lifespan <= 0)
                 Explode();

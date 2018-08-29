@@ -30,6 +30,18 @@ namespace Game
             FixPosition();
         }
 
+        public void LevelUp(int level)
+        {
+            if (level == 1)
+            {
+                weaponCooldown -= 0.05f;
+            }
+            if (level == 2)
+            {
+                weaponCooldown -= 0.05f;
+            }
+        }
+
         public void PointToBoss(Transform boss)
         {
             pointer.Activate(boss);

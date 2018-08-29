@@ -8,12 +8,12 @@ namespace Game.Projectiles
 
         public override void Explode()
         {
-            transform.localPosition -= direction * Time.timeScale;
+            transform.localPosition -= direction * Time.timeScale * Time.deltaTime;
 
             for (int i = 0; i < 10; i++)
             {
                 direction = Quaternion.Euler(0,0,36) * direction;
-                Create(shrapnelPrefab).SetValues(direction, fraction);
+                Create(shrapnelPrefab).SetValues(direction, fraction, target);
             }
             
             base.Explode();

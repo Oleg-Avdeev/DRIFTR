@@ -34,7 +34,7 @@ namespace Game
             UpdateState();
 			speed += acceleration;
 			speed = speed.normalized * Mathf.Min(speed.magnitude, maxSpeed);
-            transform.localPosition += speed * Time.timeScale;
+            transform.localPosition += speed * Time.timeScale * Time.deltaTime;
 
 			float angle = Vector3.Angle(Vector3.up, acceleration);
             if (acceleration.x > 0) angle = 360 - angle;
@@ -53,12 +53,12 @@ namespace Game
 			Destroy(gameObject);
 		}
 
-		protected void Shoot(Vector3 direction)
+		protected void Shoot(Vector3 direction, Transform target = null)
 		{
 			if (shootLock < Time.fixedTime)
 			{
 				var projectile = Create(mainProjectile);
-				projectile.SetValues(direction, fraction);
+				projectile.SetValues(direction, fraction, target);
 				projectileList.Add(projectile);
 				shootLock = Time.fixedTime + weaponCooldown;
 			}

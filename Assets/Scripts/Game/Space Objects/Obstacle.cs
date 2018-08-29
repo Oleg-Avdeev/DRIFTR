@@ -21,6 +21,11 @@ namespace Game.SpaceObjects
             transform.localRotation = Quaternion.Euler(0,0,Random.Range(-180,180));
         }
 
+        public void AddRandomRotation()
+        {
+            transform.localRotation *= Quaternion.Euler(0,0,Random.Range(-120,120));
+        }
+
         public Vector3 GetTurretPosition()
         {
             return turretSlot.position;
