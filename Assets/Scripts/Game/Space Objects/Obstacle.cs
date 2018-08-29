@@ -11,7 +11,7 @@ namespace Game.SpaceObjects
         private bool collidable = true;
         
 
-        public override void Update()
+        public override void Act()
         {
             
         }

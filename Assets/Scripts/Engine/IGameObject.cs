@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public abstract class Updatable : MonoBehaviour
+public abstract class Actor : MonoBehaviour
 {
-    public abstract void Update();
+    public abstract void Act();
 }
 
-public abstract class Controller : Updatable
+public abstract class Controller : Actor
 {
     public abstract void Initialize();
 }
 
-public abstract class ActiveObject : Updatable
+public abstract class ActiveObject : Actor
 {
     public virtual void Initialize() { }
     public T Create<T>(T gameObject) where T : ActiveObject

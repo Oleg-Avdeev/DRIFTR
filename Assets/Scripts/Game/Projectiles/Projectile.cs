@@ -1,17 +1,25 @@
+using System.Collections.Generic;
+using Engine;
 using UnityEngine;
 
 namespace Game.Projectiles
 {
     public class Projectile : ActiveObject
     {
-        [SerializeField] private Explosion explosionPrefab;
+        [SerializeField] protected Explosion explosionPrefab;
         [SerializeField] protected float speed = 10;
-        [SerializeField] private float lifespan;
+        [SerializeField] protected float lifespan;
 
         protected Vector3 direction;
         protected Fraction fraction;
         protected Transform target;
+        protected float deathTime;
+        protected List<Projectile> projectileList;
 
+        public void SetProjectileList(List<Projectile> list)
+        {
+            projectileList = list;
+        }
 
         public void SetValues(Vector3 direction, Fraction fraction, Transform target)
         {
@@ -23,16 +31,18 @@ namespace Game.Projectiles
             this.direction = direction;
             this.fraction = fraction;
             this.target = target;
+
+            deathTime = Time.fixedTime + lifespan;
         }
 
         protected virtual void LogicUpdate() {}
 
-        public override void Update()
+        public override void Act()
         {
             LogicUpdate();
-            transform.localPosition += direction * Time.timeScale * Time.deltaTime;
-            lifespan -= Time.deltaTime;
-            if (lifespan <= 0)
+            transform.localPosition += 4 * direction * GameLoop.NormalizedDeltaTime;
+
+            if (deathTime <= Time.fixedTime)
                 Explode();
         }
 

@@ -8,7 +8,7 @@ public class Explosion : ActiveObject
         GetComponent<ImageAnimator>().EndCallback = DestroyGameObject;
     }
 
-    public override void Update()
+    public override void Act()
     {
 
     }

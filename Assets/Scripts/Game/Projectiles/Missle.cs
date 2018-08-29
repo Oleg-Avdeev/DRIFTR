@@ -1,3 +1,4 @@
+using Engine;
 using UnityEngine;
 
 namespace Game.Projectiles
@@ -10,7 +11,7 @@ namespace Game.Projectiles
             if (target)
             {
                 acceleration = (target.localPosition - transform.localPosition);
-                direction = speed * (direction + acceleration).normalized  * Time.deltaTime;
+                direction = 4 * speed * (direction + acceleration).normalized  * GameLoop.NormalizedDeltaTime;
             }
         }
     }

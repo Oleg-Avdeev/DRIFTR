@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Engine;
 using UnityEngine;
 
 namespace Game
@@ -24,10 +25,11 @@ namespace Game
             }
             else
             {
-                GameController.Multiplier += 0.01f;
+                GameController.Multiplier += 0.01f * 4 * GameLoop.NormalizedDeltaTime;
             }
 
             FixPosition();
+            pointer.Act();
         }
 
         public void LevelUp(int level)

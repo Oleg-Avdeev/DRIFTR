@@ -21,7 +21,7 @@ namespace Game
         [SerializeField] protected float maxAcceleration;
         [SerializeField] protected float maxSpeed;
 
-		private List<Projectile> projectileList = new List<Projectile>();
+		private List<Projectile> projectileList;
 		private float shootLock = 0;
 
         protected Vector3 acceleration = Vector3.zero;
@@ -29,21 +29,21 @@ namespace Game
 
         protected virtual void UpdateState() { }
 
-        public override void Update()
+		public void SetProjectileList(List<Projectile> list)
+		{
+			projectileList = list;
+		}
+
+        public override void Act()
         {	
             UpdateState();
-			speed += acceleration;
+			speed += 4 * acceleration * Engine.GameLoop.NormalizedDeltaTime;
 			speed = speed.normalized * Mathf.Min(speed.magnitude, maxSpeed);
-            transform.localPosition += speed * Time.timeScale * Time.deltaTime;
+            transform.localPosition += speed * 4 * Engine.GameLoop.NormalizedDeltaTime;
 
 			float angle = Vector3.Angle(Vector3.up, acceleration);
             if (acceleration.x > 0) angle = 360 - angle;
             transform.localRotation = Quaternion.Euler(0, 0, angle);
-
-			for (int i = 0; i < projectileList.Count; i++)
-			{
-				if (projectileList[i]) projectileList[i].Update();
-			}
         }
 
 		public void Explode()
@@ -59,6 +59,7 @@ namespace Game
 			{
 				var projectile = Create(mainProjectile);
 				projectile.SetValues(direction, fraction, target);
+				projectile.SetProjectileList(projectileList);
 				projectileList.Add(projectile);
 				shootLock = Time.fixedTime + weaponCooldown;
 			}

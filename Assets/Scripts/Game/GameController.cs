@@ -42,6 +42,7 @@ namespace Game
             spaceController?.Initialize();
             
             Root = spaceController.transform;
+            Camera.main.transform.position = Vector3.zero;
         }
 
         public void EndGame()
@@ -51,10 +52,10 @@ namespace Game
             spaceController = null;
         }
 
-        public override void Update()
+        public override void Act()
         {
-            spaceController?.Update();
-            gameScreen?.Update();
+            spaceController?.Act();
+            gameScreen?.Act();
         }
     }
 }

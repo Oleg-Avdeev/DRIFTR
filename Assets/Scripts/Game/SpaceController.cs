@@ -3,6 +3,7 @@ using Game.SpaceObjects;
 using Game.Effects;
 using UnityEngine;
 using Engine;
+using Game.Projectiles;
 
 namespace Game
 {
@@ -19,6 +20,7 @@ namespace Game
 
         private PlayerShip player;
         private List<Turret> enemies;
+        private List<Projectile> projectileList = new List<Projectile>();
         private SphereMap map;
         private BossTurret boss;
 
@@ -37,6 +39,7 @@ namespace Game
         public override void Initialize()
         {
             player = Instantiate(playerShipPrefab, Vector3.zero, Quaternion.identity, transform) as PlayerShip;
+            player.SetProjectileList(projectileList);
             Camera.main.GetComponent<CameraFollow>().setTarget(player.transform);
             player.OnDestroyed += () => { 
                 finishGame = true;
@@ -54,6 +57,7 @@ namespace Game
             {
                 enemies.Add(Instantiate(chooseRandomTurret(), turretPositions[i], Quaternion.identity, transform));
                 enemies[i].UpdateShipList(playerList);
+                enemies[i].SetProjectileList(projectileList);
                 enemies[i].OnDestroyed += HandleEnemyDestruction;
             }
 
@@ -66,7 +70,7 @@ namespace Game
             GameController.Multiplier *= 1.1f;
             killedEnemies++;
 
-            if (killedEnemies >= 8 && currentLevel == 0 && !bossBattle)
+            if (killedEnemies >= 1 && currentLevel == 0 && !bossBattle)
             {
                StartBossBattle(bossTurretPrefabs[0]);
             }
@@ -81,6 +85,7 @@ namespace Game
         {
             boss = Instantiate(bossPrefab, Vector3.zero, Quaternion.identity, transform);
             boss.InitializeBoss(playerList, HandleEnemyDestruction);
+            boss.SetProjectileList(projectileList);
             player.PointToBoss(boss.transform);
             bossBattleEffect.Activate();
             map.SetBossBattle(true);
@@ -103,11 +108,12 @@ namespace Game
                     enemies.Add(Instantiate(chooseRandomTurret(), turretPositions[i], Quaternion.identity, transform));
                     enemies[enemies.Count - 1].UpdateShipList(playerList);
                     enemies[enemies.Count - 1].OnDestroyed += HandleEnemyDestruction;
+                    enemies[enemies.Count - 1].SetProjectileList(projectileList);
                 }
             };
         }
 
-        public override void Update()
+        public override void Act()
         {
             if (finishGame)
             {
@@ -117,20 +123,25 @@ namespace Game
                 }
             }
 
-            map.Update();
-            if (player) player.Update();
-            if (boss) boss.Update();
+            map.Act();
+            if (player) player.Act();
+            if (boss) boss.Act();
             
             if (!bossBattle)
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    if (enemies[i]) enemies[i].Update();
+                    if (enemies[i]) enemies[i].Act();
                 }
             }
+
+			for (int i = 0; i < projectileList.Count; i++)
+			{
+				if (projectileList[i]) projectileList[i].Act();
+			}
             
-            timeScaleEffect?.Update();
-            
+            timeScaleEffect?.Act();
+            bossBattleEffect?.Act();
         }
 
         

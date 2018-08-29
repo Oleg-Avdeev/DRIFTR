@@ -36,7 +36,7 @@ namespace Game
             if (!target && !pointToCenter) gameObject.SetActive(false);
         }
 
-	    public override void Update()
+	    public override void Act()
         {	
             if (target)
             {

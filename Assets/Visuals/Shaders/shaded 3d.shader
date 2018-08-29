@@ -3,6 +3,7 @@
 	Properties
 	{
 		_Color ("Color", Color) = (1,1,1,1)
+		_White ("White", Float) = 0
 	}
 	SubShader
 	{
@@ -29,10 +30,11 @@
 			}
 
 			fixed4 _Color;
+			fixed _White;
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				return _Color;
+				return _Color+_White;
 			}
 			ENDCG
 		}

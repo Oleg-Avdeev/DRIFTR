@@ -5,8 +5,6 @@ namespace Game.SpaceObjects
 {
     public class SphereMap : ActiveObject
     {
-        [SerializeField] private Material planetMaterial;
-
         public Obstacle Sphere;
         private List<Obstacle> spheres;
         private int stoppedCounter = 0;
@@ -67,8 +65,6 @@ namespace Game.SpaceObjects
                     spheres[i].EnabledTurret = false;
                 }
             }
-
-            planetMaterial.SetFloat("_White",0);
         }
 
         public void AddRandomRotation()
@@ -104,18 +100,9 @@ namespace Game.SpaceObjects
             }
         }
 
-        public override void Update()
+        public override void Act()
         {
-            if (changing)
-            {
-                currentWhite = currentWhite + (targetWhite - currentWhite)/10f;
-                planetMaterial.SetFloat("_White",currentWhite);
-                
-                if (currentWhite >= 0.99f)
-                {
-                    changing = false;
-                }
-            }
+            
         }
     }
 }

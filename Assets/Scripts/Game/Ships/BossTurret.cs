@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Projectiles;
 using UnityEngine;
 using System;
+using Engine;
 
 namespace Game
 {
@@ -14,9 +15,17 @@ namespace Game
         private Quaternion rotationMatrix;
         private int defeatedTurrets = 0;
 
+        public void SetProjectileList(List<Projectile> projectileList)
+        {
+            for (int i = 0; i < subTurrets.Count; i++)
+            {
+                subTurrets[i].SetProjectileList(projectileList);
+            }
+        }
+
         public void InitializeBoss(List<Ship> ships, Action DestroyHandler)
         {
-            rotationMatrix = Quaternion.Euler(0,0,angleSpeed * Time.deltaTime);
+            rotationMatrix = Quaternion.Euler(0,0,4*angleSpeed*GameLoop.NormalizedDeltaTime);
 
             for (int i = 0; i < subTurrets.Count; i++)
             {
@@ -35,12 +44,12 @@ namespace Game
             }
         }
 
-        public override void Update()
+        public override void Act()
         {
             transform.localRotation *= rotationMatrix;
             for (int i = 0; i < subTurrets.Count; i++)
             {
-                if (subTurrets[i]) subTurrets[i].Update();
+                if (subTurrets[i]) subTurrets[i].Act();
             }
         }
 

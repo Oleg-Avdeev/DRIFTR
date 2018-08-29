@@ -3,9 +3,10 @@ using UnityEngine.PostProcessing;
 
 namespace Game.Effects
 {
-    public class BossBattleEffect : Updatable
+    public class BossBattleEffect : Actor
     {
         [SerializeField] private PostProcessingProfile effectStackProfile;
+        [SerializeField] private Material[] materialList;
 
         private bool changing = false;
         private float wait = 0;
@@ -34,9 +35,9 @@ namespace Game.Effects
             changing = false;
         }
 
-        public override void Update()
+        public override void Act()
         {
-            if (currentValue < 0.1f && !changing) return;
+            if (!changing && targetValue == 0) return;
 
             UpdateFX();
           
@@ -44,7 +45,7 @@ namespace Game.Effects
 
             if (Mathf.Abs(targetValue - currentValue) > 0.01)
             {
-                currentValue = currentValue + (targetValue - currentValue)/40;
+                currentValue = currentValue + (targetValue - currentValue)/10*Engine.GameLoop.NormalizedDeltaTime;
             }
             else
             {
@@ -59,6 +60,11 @@ namespace Game.Effects
 
             effectStackProfile.chromaticAberration.settings = chromaticFx;
             effectStackProfile.bloom.settings = bloomFx;
+
+            for (int i = 0; i < materialList.Length; i++)
+            {
+                materialList[i].SetFloat("_White",currentValue);
+            }
         }
     }
 }

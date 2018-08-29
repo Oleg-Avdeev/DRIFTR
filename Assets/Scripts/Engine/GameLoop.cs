@@ -4,7 +4,9 @@ namespace Engine
 {
     public class GameLoop : MonoBehaviour
     {
+        public static float NormalizedDeltaTime;
         [SerializeField] private MonoBehaviour gameControllerPrefab;
+        [SerializeField] private float deltaTimeScaleFactor = 50;
 
         Controller rootGameController;
 
@@ -19,7 +21,8 @@ namespace Engine
 
         void Update()
         {
-            rootGameController?.Update();
+            NormalizedDeltaTime = Time.timeScale * Time.deltaTime * deltaTimeScaleFactor;
+            rootGameController?.Act();
         }
 
     }

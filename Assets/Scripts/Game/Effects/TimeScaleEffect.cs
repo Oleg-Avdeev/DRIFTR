@@ -3,7 +3,7 @@ using UnityEngine.PostProcessing;
 
 namespace Game.Effects
 {
-    public class TimeScaleEffect : Updatable
+    public class TimeScaleEffect : Actor
     {
         [SerializeField] private PostProcessingProfile effectStackProfile;
 
@@ -35,19 +35,22 @@ namespace Game.Effects
             slowDown = false;
         }
 
-        public override void Update()
+        public override void Act()
         {
             if (Time.timeScale > 0.99f && !slowDown) return;
 
+            float m = Engine.GameLoop.NormalizedDeltaTime/Time.timeScale;
+
             UpdateFX();
-            GameController.AddPoints((int)((1f - Time.timeScale)*100));
+            GameController.AddPoints((int)((1f - Time.timeScale) * 4 * 100 * m));
+
             GameController.MainCamera.orthographicSize = 13 + (1f - Time.timeScale)*5;
 
             if (waitTimeScale > Time.unscaledTime) return;
 
             if (Mathf.Abs(targetTimeScale - Time.timeScale) > 0.01)
             {
-                Time.timeScale = Time.timeScale + (targetTimeScale - Time.timeScale)/40;
+                Time.timeScale = Time.timeScale + (targetTimeScale - Time.timeScale)/10*m;
             }
             else
             {
