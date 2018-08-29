@@ -9,8 +9,8 @@ namespace Wazzapps.API
 {
     public static class SqlDatabase
     {
-        private const string authorizationServerAdress = "http://remote-wazbaas.com/api/request.php?";
-        private const string dataServerAdress = "http://remote-wazbaas.com/api/request.php?";
+        private const string authorizationServerAdress = "http://daysofokays.com/api/request.php?";
+        private const string dataServerAdress = "http://daysofokays.com/api/request.php?";
         private const string httpRequestPrefix = "req=";
         #region crypto
         private const string BD_KEY_0 = "59e16266e2feaf8";

@@ -17,7 +17,7 @@ namespace Game
         [SerializeField] private TimeScaleEffect timeScaleEffect;
         [SerializeField] private BossBattleEffect bossBattleEffect;
 
-        private Ship player;
+        private PlayerShip player;
         private List<Turret> enemies;
         private SphereMap map;
         private BossTurret boss;
@@ -35,7 +35,7 @@ namespace Game
 
         public override void Initialize()
         {
-            player = Instantiate(playerShipPrefab, Vector3.zero, Quaternion.identity, transform);
+            player = Instantiate(playerShipPrefab, Vector3.zero, Quaternion.identity, transform) as PlayerShip;
             Camera.main.GetComponent<CameraFollow>().setTarget(player.transform);
             player.OnDestroyed += () => { 
                 finishGame = true;
@@ -67,17 +67,30 @@ namespace Game
 
             if (killedEnemies == 8)
             {
-                boss = Instantiate(bossTurretPrefabs[0], Vector3.zero, Quaternion.identity, transform);
-                boss.InitializeBoss(playerList, HandleEnemyDestruction);
-                boss.OnDefeated += () => {
-                    bossBattleEffect.Deactivate();
-                    map.SetBossBattle(false);
-                    bossBattle = false;    
-                };
-                bossBattleEffect.Activate();
-                map.SetBossBattle(true);
-                bossBattle = true;
+               StartBossBattle(bossTurretPrefabs[0]);
             }
+
+            if (killedEnemies == 20)
+            {
+               StartBossBattle(bossTurretPrefabs[1]);
+            }
+        }
+
+        private void StartBossBattle(BossTurret bossPrefab)
+        {
+            boss = Instantiate(bossPrefab, Vector3.zero, Quaternion.identity, transform);
+            boss.InitializeBoss(playerList, HandleEnemyDestruction);
+            player.PointToBoss(boss.transform);
+            bossBattleEffect.Activate();
+            map.SetBossBattle(true);
+            bossBattle = true;
+            
+            boss.OnDefeated += () => {
+                bossBattleEffect.Deactivate();
+                map.SetBossBattle(false);
+                bossBattle = false;    
+                player.StopPointingToBoss();
+            };
         }
 
         public override void Update()

@@ -23,30 +23,19 @@ public class CameraFollow : MonoBehaviour
         transform.parent = null;
     }
 
-    public void SetBattle(bool battle)
-    {
-        if (battle)
-        {
-            damping = 0.05f;
-            lookAheadFactor = 0.1f;
-            lookAheadReturnSpeed = 0.0f;
-            lookAheadMoveThreshold = 0.0f;
-        }
-        else
-        {
-            damping = 3;
-            lookAheadFactor = 3;
-            lookAheadReturnSpeed = 0.5f;
-            lookAheadMoveThreshold = 0.1f;
-        }
-    }
-
     // Update is called once per frame
     private void Update()
     {
         if (!target) return;
 
         Vector3 MoveDelta = (target.position - m_LastTargetPosition);
+
+        if (MoveDelta.magnitude > 50)
+        {
+            m_LastTargetPosition = target.position;
+            transform.position = m_LastTargetPosition;
+            return;
+        }
 
         bool updateLookAheadTarget = Mathf.Abs(MoveDelta.magnitude) > lookAheadMoveThreshold;
 
