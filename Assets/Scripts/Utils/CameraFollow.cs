@@ -21,6 +21,8 @@ public class CameraFollow : MonoBehaviour
         m_LastTargetPosition = target.position;
         m_OffsetZ = (transform.position - target.position).z;
         transform.parent = null;
+
+        transform.position = new Vector3(target.position.x,target.position.y,transform.position.z);
     }
 
     // Update is called once per frame
@@ -29,13 +31,6 @@ public class CameraFollow : MonoBehaviour
         if (!target) return;
 
         Vector3 MoveDelta = (target.position - m_LastTargetPosition);
-
-        if (MoveDelta.magnitude > 50)
-        {
-            m_LastTargetPosition = target.position;
-            transform.position = m_LastTargetPosition;
-            return;
-        }
 
         bool updateLookAheadTarget = Mathf.Abs(MoveDelta.magnitude) > lookAheadMoveThreshold;
 

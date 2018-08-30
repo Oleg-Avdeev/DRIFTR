@@ -73,17 +73,21 @@ namespace Game.SpaceObjects
             {
                 spheres[i].AddRandomRotation();
             }
+
+            spheres.Shuffle();
         }
 
-        public List<Vector3> SelectTurretPositions(int number)
+        public List<Transform> SelectTurretPositions(int number)
         {
-            var list = new List<Vector3>();
+            var list = new List<Transform>();
             number = Mathf.Min(spheres.Count, number);
             for (int i = 0; i < number; i++)
             {
                 if (spheres[i].EnabledTurret)
                 {
-                    list.Add(spheres[i].GetTurretPosition());
+                    var slot =spheres[i].GetTurretPosition();
+                    if (slot == null) continue;
+                    list.Add(slot);
                 }
             }
             return list;
@@ -102,7 +106,10 @@ namespace Game.SpaceObjects
 
         public override void Act()
         {
-            
+            for (int i = 0; i < spheres.Count; i++)
+            {
+                spheres[i].Act();
+            }
         }
     }
 }

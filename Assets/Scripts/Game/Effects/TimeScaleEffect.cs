@@ -56,7 +56,7 @@ namespace Game.Effects
             {
                 if (slowDown)
                 {
-                    waitTimeScale = Time.unscaledTime + 1.5f;
+                    waitTimeScale = Time.unscaledTime + 1.2f;
                     targetTimeScale = 1;
                     slowDown = false;
                 }

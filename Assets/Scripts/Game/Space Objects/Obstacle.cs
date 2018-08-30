@@ -1,3 +1,4 @@
+using Engine;
 using Game.Projectiles;
 using UnityEngine;
 
@@ -9,26 +10,38 @@ namespace Game.SpaceObjects
         public bool EnabledTurret = true;
         [SerializeField] private Transform turretSlot;
         private bool collidable = true;
+        private bool rotating = false;
         
 
         public override void Act()
         {
-            
+            if (rotating)
+            {
+                transform.localRotation *= Quaternion.Euler(0,0, 2*GameLoop.NormalizedDeltaTime );
+            }
         }
 
         public void SetRandomRotation()
         {
             transform.localRotation = Quaternion.Euler(0,0,Random.Range(-180,180));
+            if (Random.Range(0, 100) > 60)
+            {
+                rotating = true;
+            }
         }
 
         public void AddRandomRotation()
         {
-            transform.localRotation *= Quaternion.Euler(0,0,Random.Range(-120,120));
+            if (Random.Range(0, 100) > 60)
+            {
+                rotating = true;
+            }
         }
 
-        public Vector3 GetTurretPosition()
+        public Transform GetTurretPosition()
         {
-            return turretSlot.position;
+            if (turretSlot.childCount != 0) return null;
+            return turretSlot;
         }
 
         public void SetCollidable(bool collidable)

@@ -25,7 +25,7 @@ namespace Game
 
         public void InitializeBoss(List<Ship> ships, Action DestroyHandler)
         {
-            rotationMatrix = Quaternion.Euler(0,0,4*angleSpeed*GameLoop.NormalizedDeltaTime);
+            rotationMatrix = Quaternion.Euler(0,0,3*angleSpeed*GameLoop.NormalizedDeltaTime);
 
             for (int i = 0; i < subTurrets.Count; i++)
             {

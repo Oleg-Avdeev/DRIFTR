@@ -16,6 +16,7 @@ namespace Game
         public void UpdateShipList(List<Ship> ships)
         {
             this.ships = ships;
+			transform.localScale = Vector3.one * (1f/transform.parent.localScale.x);
         }
 
         protected override void UpdateState()

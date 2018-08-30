@@ -11,7 +11,7 @@ namespace Game.Effects
         private bool changing = false;
         private float wait = 0;
         private float currentValue = 0.0f;
-        private float targetValue = 1.0f;
+        private float targetValue = 0.0f;
 
         private ChromaticAberrationModel.Settings chromaticFx;
         private BloomModel.Settings bloomFx;
@@ -32,7 +32,7 @@ namespace Game.Effects
         public void Deactivate()
         {
             targetValue = 0f;
-            changing = false;
+            changing = true;
         }
 
         public override void Act()
@@ -45,7 +45,7 @@ namespace Game.Effects
 
             if (Mathf.Abs(targetValue - currentValue) > 0.01)
             {
-                currentValue = currentValue + (targetValue - currentValue)/10*Engine.GameLoop.NormalizedDeltaTime;
+                currentValue = currentValue + (targetValue - currentValue)/20*Engine.GameLoop.NormalizedDeltaTime;
             }
             else
             {

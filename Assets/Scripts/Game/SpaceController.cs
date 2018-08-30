@@ -55,13 +55,15 @@ namespace Game
             enemies = new List<Turret>();
             for (int i = 0; i < turretPositions.Count; i++)
             {
-                enemies.Add(Instantiate(chooseRandomTurret(), turretPositions[i], Quaternion.identity, transform));
+                enemies.Add(Instantiate(chooseRandomTurret(), turretPositions[i].position, Quaternion.identity, turretPositions[i]));
+                enemies[i].Initialize();
                 enemies[i].UpdateShipList(playerList);
                 enemies[i].SetProjectileList(projectileList);
                 enemies[i].OnDestroyed += HandleEnemyDestruction;
             }
 
             timeScaleEffect?.Initialize();
+            bossBattleEffect?.Initialize();
         }
 
         private void HandleEnemyDestruction()
@@ -70,7 +72,7 @@ namespace Game
             GameController.Multiplier *= 1.1f;
             killedEnemies++;
 
-            if (killedEnemies >= 1 && currentLevel == 0 && !bossBattle)
+            if (killedEnemies >= 8 && currentLevel == 0 && !bossBattle)
             {
                StartBossBattle(bossTurretPrefabs[0]);
             }
@@ -90,6 +92,9 @@ namespace Game
             bossBattleEffect.Activate();
             map.SetBossBattle(true);
             bossBattle = true;
+
+            for (int i = 0; i < enemies.Count; i++)
+                if (enemies[i]) enemies[i].DisableCollisions();
             
             boss.OnDefeated += () => {
                 currentLevel++;
@@ -100,15 +105,19 @@ namespace Game
                 player.StopPointingToBoss();
                 player.LevelUp(currentLevel);
 
-                map.AddRandomRotation();
+                for (int i = 0; i < enemies.Count; i++)
+                    if (enemies[i]) enemies[i].ReenableCollisions();
 
-                var turretPositions = map.SelectTurretPositions(100);
+                map.AddRandomRotation();
+                var turretPositions = map.SelectTurretPositions(65);
                 for (int i = 0; i < turretPositions.Count; i++)
                 {
-                    enemies.Add(Instantiate(chooseRandomTurret(), turretPositions[i], Quaternion.identity, transform));
-                    enemies[enemies.Count - 1].UpdateShipList(playerList);
-                    enemies[enemies.Count - 1].OnDestroyed += HandleEnemyDestruction;
-                    enemies[enemies.Count - 1].SetProjectileList(projectileList);
+                    var enemy = Instantiate(chooseRandomTurret(), turretPositions[i].position, Quaternion.identity, turretPositions[i]);
+                    enemy.Initialize();
+                    enemy.UpdateShipList(playerList);
+                    enemy.OnDestroyed += HandleEnemyDestruction;
+                    enemy.SetProjectileList(projectileList);
+                    enemies.Add(enemy);
                 }
             };
         }

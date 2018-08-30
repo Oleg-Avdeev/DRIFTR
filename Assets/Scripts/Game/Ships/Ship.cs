@@ -23,6 +23,7 @@ namespace Game
 
 		private List<Projectile> projectileList;
 		private float shootLock = 0;
+		private Collider2D collider;
 
         protected Vector3 acceleration = Vector3.zero;
         protected Vector3 speed = Vector3.right / 100;
@@ -32,6 +33,11 @@ namespace Game
 		public void SetProjectileList(List<Projectile> list)
 		{
 			projectileList = list;
+		}
+
+		public override void Initialize()
+		{
+			collider = GetComponent<Collider2D>();
 		}
 
         public override void Act()
@@ -45,6 +51,16 @@ namespace Game
             if (acceleration.x > 0) angle = 360 - angle;
             transform.localRotation = Quaternion.Euler(0, 0, angle);
         }
+
+		public void DisableCollisions()
+		{
+			collider.enabled = false;
+		}
+
+		public void ReenableCollisions()
+		{
+			collider.enabled = true;
+		}
 
 		public void Explode()
 		{

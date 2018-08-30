@@ -42,7 +42,6 @@ namespace Game
             spaceController?.Initialize();
             
             Root = spaceController.transform;
-            Camera.main.transform.position = Vector3.zero;
         }
 
         public void EndGame()
