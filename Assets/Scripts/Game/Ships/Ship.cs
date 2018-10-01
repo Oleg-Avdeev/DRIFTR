@@ -98,6 +98,7 @@ namespace Game
 				if (ship != null)
 				{
 					Explode();
+            		GameController.Multiplier += 1f;
 				}
 			}
     	}

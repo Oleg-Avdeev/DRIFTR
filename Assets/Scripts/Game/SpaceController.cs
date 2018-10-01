@@ -49,6 +49,7 @@ namespace Game
 
             map = Instantiate(sphearMapPrefab, Vector3.right*10, Quaternion.identity, transform);
             map.Initialize();
+            map.SetPlayerTransform(player.transform);
             var turretPositions = map.SelectTurretPositions(100);
             playerList = new List<Ship>() { player };
 
@@ -69,7 +70,7 @@ namespace Game
         private void HandleEnemyDestruction()
         {
             timeScaleEffect?.Activate();
-            GameController.Multiplier *= 1.1f;
+            GameController.Multiplier += 2f;
             killedEnemies++;
 
             if (killedEnemies >= 8 && currentLevel == 0 && !bossBattle)
@@ -77,7 +78,7 @@ namespace Game
                StartBossBattle(bossTurretPrefabs[0]);
             }
 
-            if (killedEnemies >= 20 && currentLevel == 1 && !bossBattle)
+            if (killedEnemies >= 22 && currentLevel == 1 && !bossBattle)
             {
                StartBossBattle(bossTurretPrefabs[1]);
             }
@@ -97,6 +98,9 @@ namespace Game
                 if (enemies[i]) enemies[i].DisableCollisions();
             
             boss.OnDefeated += () => {
+                
+                GameController.Multiplier *= 2;
+
                 currentLevel++;
 
                 bossBattleEffect.Deactivate();
@@ -132,8 +136,12 @@ namespace Game
                 }
             }
 
-            map.Act();
             if (player) player.Act();
+            map.Act();
+
+            var score = 0.1f*(1.5f - map.GetClosestPlanet());
+            GameController.Multiplier += (Mathf.Max(0, score)) * GameLoop.NormalizedDeltaTime;
+
             if (boss) boss.Act();
             
             if (!bossBattle)

@@ -23,10 +23,6 @@ namespace Game
             {
                 GameController.Multiplier = 1f;
             }
-            else
-            {
-                GameController.Multiplier += 0.01f * 4 * GameLoop.NormalizedDeltaTime;
-            }
 
             FixPosition();
             pointer.Act();

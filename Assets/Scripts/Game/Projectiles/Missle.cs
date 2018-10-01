@@ -11,7 +11,7 @@ namespace Game.Projectiles
             if (target)
             {
                 acceleration = (target.localPosition - transform.localPosition);
-                direction = speed * (direction + acceleration).normalized  * GameLoop.NormalizedDeltaTime;
+                direction = speed * (direction + acceleration).normalized;
             }
         }
     }

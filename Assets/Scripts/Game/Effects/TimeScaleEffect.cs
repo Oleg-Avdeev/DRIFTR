@@ -17,6 +17,7 @@ namespace Game.Effects
 
         public void Initialize()
         {
+            GameController.MainCamera.orthographicSize = 13;
             chromaticFx = effectStackProfile.chromaticAberration.settings;
             vigneteFx = effectStackProfile.vignette.settings;
             bloomFx = effectStackProfile.bloom.settings;
@@ -42,7 +43,7 @@ namespace Game.Effects
             float m = Engine.GameLoop.NormalizedDeltaTime/Time.timeScale;
 
             UpdateFX();
-            GameController.AddPoints((int)((1f - Time.timeScale) * 4 * 100 * m));
+            GameController.AddPoints((int)((1f - Time.timeScale) * 5 * 100 * m));
 
             GameController.MainCamera.orthographicSize = 13 + (1f - Time.timeScale)*5;
 

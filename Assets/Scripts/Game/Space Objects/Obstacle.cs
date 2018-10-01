@@ -11,20 +11,27 @@ namespace Game.SpaceObjects
         [SerializeField] private Transform turretSlot;
         private bool collidable = true;
         private bool rotating = false;
+        private float angle;
         
 
         public override void Act()
         {
             if (rotating)
             {
-                transform.localRotation *= Quaternion.Euler(0,0, 2*GameLoop.NormalizedDeltaTime );
+                transform.localRotation *= Quaternion.Euler(0,0, angle*GameLoop.NormalizedDeltaTime );
             }
         }
 
+        public void SetScale()
+        {
+            turretSlot.localScale = Vector3.one * (1f/transform.localScale.x);
+        }
+        
         public void SetRandomRotation()
         {
             transform.localRotation = Quaternion.Euler(0,0,Random.Range(-180,180));
-            if (Random.Range(0, 100) > 60)
+            angle = Random.Range(-0.4f, 0.4f);
+            if (Random.Range(0, 100) > 70)
             {
                 rotating = true;
             }

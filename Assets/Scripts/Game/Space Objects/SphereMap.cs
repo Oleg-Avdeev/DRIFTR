@@ -9,9 +9,10 @@ namespace Game.SpaceObjects
         private List<Obstacle> spheres;
         private int stoppedCounter = 0;
 
-        private float targetWhite = 0;
-        private float currentWhite = 0;
-        private bool changing;
+        private bool bossFight;
+
+        private Transform playerTransform;
+        private float closestPlanetDistance;
 
         public override void Initialize()
         {
@@ -64,6 +65,8 @@ namespace Game.SpaceObjects
                 {
                     spheres[i].EnabledTurret = false;
                 }
+
+                spheres[i].SetScale();
             }
         }
 
@@ -75,6 +78,16 @@ namespace Game.SpaceObjects
             }
 
             spheres.Shuffle();
+        }
+
+        public void SetPlayerTransform(Transform player)
+        {
+            playerTransform = player;
+        }
+
+        public float GetClosestPlanet()
+        {
+            return closestPlanetDistance;
         }
 
         public List<Transform> SelectTurretPositions(int number)
@@ -95,8 +108,7 @@ namespace Game.SpaceObjects
 
         public void SetBossBattle(bool activate)
         {
-            changing = true;
-            targetWhite = !activate ? 0 : 1;
+            bossFight = activate;
 
             for (int i = 0; i < spheres.Count; i++)
             {
@@ -106,10 +118,21 @@ namespace Game.SpaceObjects
 
         public override void Act()
         {
+            closestPlanetDistance = 1000;
+            
             for (int i = 0; i < spheres.Count; i++)
             {
                 spheres[i].Act();
-            }
+                
+                if (playerTransform && !bossFight)
+                {
+                    var distance = (spheres[i].transform.localPosition - playerTransform.localPosition).magnitude - 0.5f*spheres[i].transform.localScale.x;
+                    if (distance < closestPlanetDistance)
+                    {
+                        closestPlanetDistance = distance;
+                    }
+                }   
+            }   
         }
     }
 }

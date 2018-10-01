@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: df9b7dca3a60841259766776907b8931
+guid: 0a0af54bc505a4ccb963a0924be5c222
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: a_Simpler
+  fontName: Ava Meridian
   fontNames:
-  - a_Simpler
+  - Ava Meridian
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
