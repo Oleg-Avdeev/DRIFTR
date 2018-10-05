@@ -28,12 +28,18 @@ namespace Game.Effects
         {
             targetTimeScale = 0.6f;
             slowDown = true;
+
+            Game.SFX.SoundEffectController.Instance.SetTargetReverb(1.18f, 7f);
+            Game.SFX.SoundEffectController.Instance.SetTargetLowPass(7000f);
         }
 
         public void Deactivate()
         {
             targetTimeScale = 1f;
             slowDown = false;
+
+            Game.SFX.SoundEffectController.Instance.SetTargetReverb(0f);
+            Game.SFX.SoundEffectController.Instance.SetTargetLowPass(20000f);
         }
 
         public override void Act()
@@ -60,6 +66,9 @@ namespace Game.Effects
                     waitTimeScale = Time.unscaledTime + 1.2f;
                     targetTimeScale = 1;
                     slowDown = false;
+
+                    Game.SFX.SoundEffectController.Instance.SetTargetReverb(0f, 80f);
+                    Game.SFX.SoundEffectController.Instance.SetTargetLowPass(20000f);
                 }
             }
         }

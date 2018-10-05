@@ -63,6 +63,7 @@ namespace Game.SpaceObjects
     	    if (other.gameObject.CompareTag("Projectile"))
     	    {
     	        var projectile = other.GetComponent<Projectile>();
+                projectile.SetCollisionInfo(projectile.transform.position - transform.position);
     	        projectile.Explode();
     	    }
 

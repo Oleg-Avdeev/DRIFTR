@@ -1,4 +1,5 @@
 using UnityEngine;
+using Game.SFX;
 using Engine;
 using UI;
 
@@ -21,6 +22,7 @@ namespace Game
 
         [SerializeField] private SpaceController spaceControllerPrefab;
         [SerializeField] private GameScreen gameScreenPrefab;
+        [SerializeField] private SoundController soundController;
         
         private SpaceController spaceController;
         private GameScreen gameScreen;
@@ -30,6 +32,9 @@ namespace Game
             MainCamera = Camera.main;
             gameScreen = Instantiate(gameScreenPrefab, Vector3.zero, Quaternion.identity, transform.parent);
             gameScreen.OnGameStarted += StartGame;
+
+            soundController = Instantiate(soundController, Vector3.zero, Quaternion.identity, transform.parent.parent);
+            soundController.Initialize();
         }
 
         public void StartGame()
@@ -42,6 +47,8 @@ namespace Game
             spaceController?.Initialize();
             
             Root = spaceController.transform;
+
+            SoundEffectController.Instance.SetTargetLowPass(20000f);
         }
 
         public void EndGame()
@@ -55,6 +62,8 @@ namespace Game
         {
             spaceController?.Act();
             gameScreen?.Act();
+            
+            SoundEffectController.Instance?.Act();
         }
     }
 }

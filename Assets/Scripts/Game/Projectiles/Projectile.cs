@@ -16,6 +16,8 @@ namespace Game.Projectiles
         protected float deathTime;
         protected List<Projectile> projectileList;
 
+        protected Vector3 collisionNormal;
+
         public void SetProjectileList(List<Projectile> list)
         {
             projectileList = list;
@@ -44,6 +46,11 @@ namespace Game.Projectiles
 
             if (deathTime <= Time.fixedTime)
                 Explode();
+        }
+
+        public void SetCollisionInfo(Vector3 normal)
+        {
+            collisionNormal = normal;
         }
 
         public virtual void Explode()

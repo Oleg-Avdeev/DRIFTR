@@ -39,12 +39,16 @@ namespace Game
         public override void Initialize()
         {
             player = Instantiate(playerShipPrefab, Vector3.zero, Quaternion.identity, transform) as PlayerShip;
+            player.Initialize();
             player.SetProjectileList(projectileList);
             Camera.main.GetComponent<CameraFollow>().setTarget(player.transform);
             player.OnDestroyed += () => { 
                 finishGame = true;
                 endTimer = Time.fixedTime + 1;
+                
+                SFX.SoundEffectController.Instance.UnlockEffects();
                 timeScaleEffect.Deactivate();
+                SFX.SoundEffectController.Instance.SetTargetLowPass(500f);
             };
 
             map = Instantiate(sphearMapPrefab, Vector3.right*10, Quaternion.identity, transform);

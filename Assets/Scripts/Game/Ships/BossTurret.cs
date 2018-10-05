@@ -19,6 +19,7 @@ namespace Game
         {
             for (int i = 0; i < subTurrets.Count; i++)
             {
+                subTurrets[i].Initialize();
                 subTurrets[i].SetProjectileList(projectileList);
             }
         }

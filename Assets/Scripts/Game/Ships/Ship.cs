@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Game.Projectiles;
 using UnityEngine;
+using Game.SFX;
 
 namespace Game
 {
@@ -20,10 +21,12 @@ namespace Game
         [SerializeField] protected float weaponCooldown;
         [SerializeField] protected float maxAcceleration;
         [SerializeField] protected float maxSpeed;
+        [SerializeField] protected ShipSoundEffects soundSource;
+		[SerializeField] new private Collider2D collider;
+
 
 		private List<Projectile> projectileList;
 		private float shootLock = 0;
-		private Collider2D collider;
 
         protected Vector3 acceleration = Vector3.zero;
         protected Vector3 speed = Vector3.right / 100;
@@ -37,7 +40,6 @@ namespace Game
 
 		public override void Initialize()
 		{
-			collider = GetComponent<Collider2D>();
 		}
 
         public override void Act()
@@ -67,6 +69,7 @@ namespace Game
 			Create(explosionPrefab).Initialize();
 			OnDestroyed?.Invoke();
 			Destroy(gameObject);
+			soundSource.Explode();
 		}
 
 		protected void Shoot(Vector3 direction, Transform target = null)
@@ -78,6 +81,7 @@ namespace Game
 				projectile.SetProjectileList(projectileList);
 				projectileList.Add(projectile);
 				shootLock = Time.fixedTime + weaponCooldown;
+				soundSource.Shoot();
 			}
 		}
 
@@ -88,6 +92,7 @@ namespace Game
     	        Projectile projectile = other.GetComponent<Projectile>();
     	        if (projectile.GetFraction() != fraction)
     	        {
+					projectile.SetCollisionInfo(speed);
     	            projectile.Explode();
 					Explode();
     	        }

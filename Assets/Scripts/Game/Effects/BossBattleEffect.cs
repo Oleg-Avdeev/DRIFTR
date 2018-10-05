@@ -27,12 +27,22 @@ namespace Game.Effects
         {
             targetValue = 1f;
             changing = true;
+
+            Game.SFX.SoundEffectController.Instance.SetTargetDistortion(0.1f);
+            Game.SFX.SoundEffectController.Instance.SetTargetLowPass(5000f);
+            Game.SFX.SoundEffectController.Instance.SetTargetReverb(3.5f);
+            Game.SFX.SoundEffectController.Instance.LockEffects();
         }
 
         public void Deactivate()
         {
             targetValue = 0f;
             changing = true;
+
+            Game.SFX.SoundEffectController.Instance.UnlockEffects();
+            Game.SFX.SoundEffectController.Instance.SetTargetDistortion(0.0f);
+            Game.SFX.SoundEffectController.Instance.SetTargetLowPass(20000f);
+            Game.SFX.SoundEffectController.Instance.SetTargetReverb(0f);
         }
 
         public override void Act()
