@@ -13,7 +13,7 @@ namespace Game
 
         [SerializeField] private Ship playerShipPrefab;
         [SerializeField] private Turret[] turretPrefabs;
-        [SerializeField] private BossTurret[] bossTurretPrefabs;
+        [SerializeField] private Boss[] bossTurretPrefabs;
         [SerializeField] private SphereMap sphearMapPrefab;
         [SerializeField] private TimeScaleEffect timeScaleEffect;
         [SerializeField] private BossBattleEffect bossBattleEffect;
@@ -22,7 +22,7 @@ namespace Game
         private List<Turret> enemies;
         private List<Projectile> projectileList = new List<Projectile>();
         private SphereMap map;
-        private BossTurret boss;
+        private Boss boss;
 
         private bool finishGame;
         private float endTimer;
@@ -77,7 +77,7 @@ namespace Game
             GameController.Multiplier += 2f;
             killedEnemies++;
 
-            if (killedEnemies >= 8 && currentLevel == 0 && !bossBattle)
+            if (killedEnemies >= 7 && currentLevel == 0 && !bossBattle)
             {
                StartBossBattle(bossTurretPrefabs[0]);
             }
@@ -88,7 +88,7 @@ namespace Game
             }
         }
 
-        private void StartBossBattle(BossTurret bossPrefab)
+        private void StartBossBattle(Boss bossPrefab)
         {
             boss = Instantiate(bossPrefab, Vector3.zero, Quaternion.identity, transform);
             boss.InitializeBoss(playerList, HandleEnemyDestruction);

@@ -66,10 +66,17 @@ namespace Game
 
 		public void Explode()
 		{
-			Create(explosionPrefab).Initialize();
+			if (explosionPrefab != null)
+				Create(explosionPrefab).Initialize();
+			
 			OnDestroyed?.Invoke();
+			soundSource?.Explode();
 			Destroy(gameObject);
-			soundSource.Explode();
+		}
+
+		public Vector3 GetVelocityVector()
+		{
+			return speed;
 		}
 
 		protected void Shoot(Vector3 direction, Transform target = null)

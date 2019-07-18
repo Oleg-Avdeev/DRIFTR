@@ -6,16 +6,17 @@ using Engine;
 
 namespace Game
 {
-    public class BossTurret : ActiveObject
+    public class Boss : Ship
     {
-        [SerializeField] private List<Turret> subTurrets;
+        [SerializeField] protected List<Turret> subTurrets;
         [SerializeField] private float angleSpeed = 1;
 
+        protected Ship target;
         public event Action OnDefeated;
         private Quaternion rotationMatrix;
         private int defeatedTurrets = 0;
 
-        public void SetProjectileList(List<Projectile> projectileList)
+        public new void SetProjectileList(List<Projectile> projectileList)
         {
             for (int i = 0; i < subTurrets.Count; i++)
             {
@@ -27,8 +28,8 @@ namespace Game
         public void InitializeBoss(List<Ship> ships, Action DestroyHandler)
         {
             rotationMatrix = Quaternion.Euler(0,0,3*angleSpeed*GameLoop.NormalizedDeltaTime);
-
-            for (int i = 0; i < subTurrets.Count; i++)
+            target = ships[0];
+            for (int i = 0; i < subTurrets.Count; i++)  
             {
                 subTurrets[i].OnDestroyed += DestroyHandler;
                 subTurrets[i].OnDestroyed += CountDestroyedTurrets;
@@ -42,6 +43,7 @@ namespace Game
             if (defeatedTurrets >= subTurrets.Count)
             {
                 OnDefeated?.Invoke();
+                Explode();
             }
         }
 

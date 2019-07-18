@@ -53,7 +53,12 @@ namespace Game.SpaceObjects
 
         public void SetCollidable(bool collidable)
         {
-            this.collidable = collidable;
+            // this.collidable = collidable;
+        }
+
+        public void ShiftPosition(float sx, float sy)
+        {
+            transform.localPosition += new Vector3(sx, sy);
         }
 
 		void OnTriggerEnter2D(Collider2D other)
