@@ -17,7 +17,7 @@ namespace Game.Effects
 
         public void Initialize()
         {
-            GameController.MainCamera.orthographicSize = 13;
+            // GameController.MainCamera.orthographicSize = 13;
             chromaticFx = effectStackProfile.chromaticAberration.settings;
             vigneteFx = effectStackProfile.vignette.settings;
             bloomFx = effectStackProfile.bloom.settings;

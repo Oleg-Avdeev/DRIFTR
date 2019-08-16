@@ -71,7 +71,8 @@ namespace Game
 			
 			OnDestroyed?.Invoke();
 			soundSource?.Explode();
-			Destroy(gameObject);
+			// Destroy(gameObject);
+			gameObject.SetActive(false);
 		}
 
 		public Vector3 GetVelocityVector()
