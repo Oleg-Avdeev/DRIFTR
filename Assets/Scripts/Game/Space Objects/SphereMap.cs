@@ -142,11 +142,11 @@ namespace Game.SpaceObjects
         {
             float x = 0, y = 0;
             
-            if (displacement.x > 100) x = -210;
-            else if (displacement.x < -100) x = 210;
+            if (displacement.x > 150) x = -210;
+            else if (displacement.x < -150) x = 210;
             
-            if (displacement.y > 100) y = -210;
-            else if (displacement.y < -100) y = 210;
+            if (displacement.y > 150) y = -210;
+            else if (displacement.y < -150) y = 210;
 
             target.ShiftPosition(x, y);
         }
