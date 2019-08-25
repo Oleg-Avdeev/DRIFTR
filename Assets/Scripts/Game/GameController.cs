@@ -32,6 +32,7 @@ namespace Game
             MainCamera = Camera.main;
             gameScreen = Instantiate(gameScreenPrefab, Vector3.zero, Quaternion.identity, transform.parent);
             gameScreen.OnGameStarted += StartGame;
+            gameScreen.Initialize();
 
             soundController = Instantiate(soundController, Vector3.zero, Quaternion.identity, transform.parent.parent);
             soundController.Initialize();

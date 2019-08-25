@@ -13,12 +13,9 @@ namespace UI
 
         [SerializeField] private Text scoreText;
         [SerializeField] private Text multiplierText;
-        
-        [SerializeField] private InputField playerNameInput;
-        [SerializeField] private Text endPlayerScore;
-        [SerializeField] private Text[] highScoreNames;
-        [SerializeField] private Text[] highScoreTexts;
-
+    
+        [SerializeField] private HighscoresPanel highscoresPanel;
+    
         [SerializeField] private GameObject endGamePanel;
         [SerializeField] private GameObject startGamePanel;
         
@@ -26,6 +23,7 @@ namespace UI
 
         public override void Initialize()
         {
+            highscoresPanel.Initialize();
         }
         
         public override void Act()
@@ -51,12 +49,7 @@ namespace UI
 
         public void RestartGame()
         {
-            if (!string.IsNullOrEmpty(playerNameInput.text))
-            {
-                string name = playerNameInput.text.ToLower();
-                Wazzapps.API.HighScores.HighscoresManager.Instance.SetHighscore(name, GameController.Score);
-            }
-
+            highscoresPanel.SetHighscores();
             StartGame();
         }
 
@@ -66,26 +59,7 @@ namespace UI
             multiplierText.gameObject.SetActive(false);
             endGamePanel.SetActive(true);
 
-            endPlayerScore.text = GameController.Score.ToString().PadLeft(11, '0');
-
-            Wazzapps.API.HighScores.HighscoresManager.Instance.GetHighscores((records) => {
-                for (int i = 0; i < highScoreTexts.Length; i++)
-                {
-                    if (i >= records.Count)
-                    {
-                        highScoreNames[i].gameObject.SetActive(false);
-                        highScoreTexts[i].gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        highScoreTexts[i].gameObject.SetActive(true);
-                        highScoreNames[i].gameObject.SetActive(true);
-                        var values = records[i].Split(',');
-                        highScoreNames[i].text = values[0].TrimStart('(');
-                        highScoreTexts[i].text = values[1].TrimEnd(')').PadLeft(11, '0');
-                    }
-                }
-            });
+            highscoresPanel.ShowHighscores();
         }
         
     }

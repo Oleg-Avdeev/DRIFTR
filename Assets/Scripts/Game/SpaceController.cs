@@ -39,21 +39,31 @@ namespace Game
         public override void Initialize()
         {
             player = Instantiate(playerShipPrefab, Vector3.zero, Quaternion.identity, transform) as PlayerShip;
-            player.Initialize();
             player.SetProjectileList(projectileList);
-            Camera.main.GetComponent<CameraFollow>().setTarget(player.transform);
-            player.OnDestroyed += () => { 
+            player.Initialize();
+
+            player.OnDestroyed += () =>
+            {
                 finishGame = true;
                 endTimer = Time.fixedTime + 1;
-                
-                SFX.SoundEffectController.Instance.UnlockEffects();
+
                 timeScaleEffect.Deactivate();
+                SFX.SoundEffectController.Instance.UnlockEffects();
                 SFX.SoundEffectController.Instance.SetTargetLowPass(500f);
             };
 
-            map = Instantiate(sphearMapPrefab, Vector3.right*10, Quaternion.identity, transform);
-            map.Initialize();
+            map = Instantiate(sphearMapPrefab, Vector3.right * 10, Quaternion.identity, transform);
             map.SetPlayerTransform(player.transform);
+            map.Initialize();
+
+            InitializeEnemies();
+
+            timeScaleEffect?.Initialize();
+            bossBattleEffect?.Initialize();
+        }
+
+        private void InitializeEnemies()
+        {
             var turretPositions = map.SelectTurretPositions(100);
             playerList = new List<Ship>() { player };
 
@@ -66,10 +76,8 @@ namespace Game
                 enemies[i].SetProjectileList(projectileList);
                 enemies[i].OnDestroyed += HandleEnemyDestruction;
             }
-
-            timeScaleEffect?.Initialize();
-            bossBattleEffect?.Initialize();
         }
+
 
         private void HandleEnemyDestruction()
         {
@@ -79,12 +87,12 @@ namespace Game
 
             if (killedEnemies >= 7 && currentLevel == 0 && !bossBattle)
             {
-               StartBossBattle(bossTurretPrefabs[0]);
+                StartBossBattle(bossTurretPrefabs[0]);
             }
 
             if (killedEnemies >= 22 && currentLevel == 1 && !bossBattle)
             {
-               StartBossBattle(bossTurretPrefabs[1]);
+                StartBossBattle(bossTurretPrefabs[1]);
             }
         }
 
@@ -100,34 +108,36 @@ namespace Game
 
             for (int i = 0; i < enemies.Count; i++)
                 if (enemies[i]) enemies[i].DisableCollisions();
-            
-            boss.OnDefeated += () => {
-                
-                GameController.Multiplier *= 2;
 
-                currentLevel++;
+            boss.OnDefeated += OnBossDefeated;
+        }
 
-                bossBattleEffect.Deactivate();
-                map.SetBossBattle(false);
-                bossBattle = false;    
-                player.StopPointingToBoss();
-                player.LevelUp(currentLevel);
+        private void OnBossDefeated()
+        {
+            GameController.Multiplier *= 2;
 
-                for (int i = 0; i < enemies.Count; i++)
-                    if (enemies[i]) enemies[i].ReenableCollisions();
+            currentLevel++;
 
-                map.AddRandomRotation();
-                var turretPositions = map.SelectTurretPositions(65);
-                for (int i = 0; i < turretPositions.Count; i++)
-                {
-                    var enemy = Instantiate(chooseRandomTurret(), turretPositions[i].position, Quaternion.identity, turretPositions[i]);
-                    enemy.Initialize();
-                    enemy.UpdateShipList(playerList);
-                    enemy.OnDestroyed += HandleEnemyDestruction;
-                    enemy.SetProjectileList(projectileList);
-                    enemies.Add(enemy);
-                }
-            };
+            bossBattleEffect.Deactivate();
+            map.SetBossBattle(false);
+            bossBattle = false;
+            player.StopPointingToBoss();
+            player.LevelUp(currentLevel);
+
+            for (int i = 0; i < enemies.Count; i++)
+                if (enemies[i]) enemies[i].ReenableCollisions();
+
+            map.AddRandomRotation();
+            var turretPositions = map.SelectTurretPositions(65);
+            for (int i = 0; i < turretPositions.Count; i++)
+            {
+                var enemy = Instantiate(chooseRandomTurret(), turretPositions[i].position, Quaternion.identity, turretPositions[i]);
+                enemy.Initialize();
+                enemy.UpdateShipList(playerList);
+                enemy.OnDestroyed += HandleEnemyDestruction;
+                enemy.SetProjectileList(projectileList);
+                enemies.Add(enemy);
+            }
         }
 
         public override void Act()
@@ -143,11 +153,11 @@ namespace Game
             if (player) player.Act();
             map.Act();
 
-            var score = 0.1f*(1.5f - map.GetClosestPlanet());
+            var score = 0.1f * (1.5f - map.GetClosestPlanet());
             GameController.Multiplier += (Mathf.Max(0, score)) * GameLoop.NormalizedDeltaTime;
 
             if (boss) boss.Act();
-            
+
             if (!bossBattle)
             {
                 for (int i = 0; i < enemies.Count; i++)
@@ -156,15 +166,15 @@ namespace Game
                 }
             }
 
-			for (int i = 0; i < projectileList.Count; i++)
-			{
-				if (projectileList[i]) projectileList[i].Act();
-			}
-            
+            for (int i = 0; i < projectileList.Count; i++)
+            {
+                if (projectileList[i]) projectileList[i].Act();
+            }
+
             timeScaleEffect?.Act();
             bossBattleEffect?.Act();
         }
 
-        
+
     }
 }

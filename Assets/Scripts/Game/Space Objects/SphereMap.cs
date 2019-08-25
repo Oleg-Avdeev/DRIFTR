@@ -59,6 +59,7 @@ namespace Game.SpaceObjects
                 {
                     Destroy(spheres[i].gameObject);
                     spheres.RemoveAt(i);
+                    continue;
                 }
 
                 if (i < spheres.Count && spheres[i].transform.localScale.x < 2.8f)
