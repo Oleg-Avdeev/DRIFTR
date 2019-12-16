@@ -40,7 +40,6 @@ namespace Game
 
 		public override void Initialize()
 		{
-			Camera.main.GetComponent<CameraFollow>().setTarget(transform);
 		}
 
         public override void Act()

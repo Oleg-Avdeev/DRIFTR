@@ -39,6 +39,7 @@ namespace Game
         public override void Initialize()
         {
             player = Instantiate(playerShipPrefab, Vector3.zero, Quaternion.identity, transform) as PlayerShip;
+            Camera.main.GetComponent<CameraFollow>().setTarget(player.transform);
             player.SetProjectileList(projectileList);
             player.Initialize();
 
