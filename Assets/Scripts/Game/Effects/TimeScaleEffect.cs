@@ -10,6 +10,9 @@ namespace Game.Effects
         private bool slowDown = false;
         private float waitTimeScale = 0;
         private float targetTimeScale = 1.0f;
+        
+        private float sizeMin = 14;//13.0f;
+        private float sizeMax = 19;//18.0f;
 
         private ChromaticAberrationModel.Settings chromaticFx;
         private VignetteModel.Settings vigneteFx;
@@ -17,7 +20,7 @@ namespace Game.Effects
 
         public void Initialize()
         {
-            GameController.MainCamera.orthographicSize = 13;
+            GameController.MainCamera.orthographicSize = sizeMin;
             chromaticFx = effectStackProfile.chromaticAberration.settings;
             vigneteFx = effectStackProfile.vignette.settings;
             bloomFx = effectStackProfile.bloom.settings;
@@ -51,7 +54,7 @@ namespace Game.Effects
             UpdateFX();
             GameController.AddPoints((int)((1f - Time.timeScale) * 5 * 100 * m));
 
-            GameController.MainCamera.orthographicSize = 13 + (1f - Time.timeScale)*5;
+            GameController.MainCamera.orthographicSize = sizeMin + (1f - Time.timeScale)*(sizeMax - sizeMin);
 
             if (waitTimeScale > Time.unscaledTime) return;
 
@@ -75,13 +78,14 @@ namespace Game.Effects
 
         private void UpdateFX()
         {
-            chromaticFx.intensity = (1f - Time.timeScale)*2f;
             vigneteFx.intensity = (1f - Time.timeScale)*0.5f;
-            bloomFx.bloom.intensity = 1f - Time.timeScale;
-
-            effectStackProfile.chromaticAberration.settings = chromaticFx;
             effectStackProfile.vignette.settings = vigneteFx;
-            effectStackProfile.bloom.settings = bloomFx;
+
+            // chromaticFx.intensity = (1f - Time.timeScale)*2f;
+            // effectStackProfile.chromaticAberration.settings = chromaticFx;
+            
+            // bloomFx.bloom.intensity = 1f - Time.timeScale;
+            // effectStackProfile.bloom.settings = bloomFx;
         }
     }
 }

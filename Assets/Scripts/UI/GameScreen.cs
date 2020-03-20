@@ -20,6 +20,7 @@ namespace UI
         [SerializeField] private GameObject startGamePanel;
         
         private bool gameStarted;
+        private float lastFPSTime = 0;
 
         public override void Initialize()
         {
@@ -29,7 +30,13 @@ namespace UI
         public override void Act()
         {
             scoreText.text = string.Format("Score: {0}", GameController.Score.ToString().PadLeft(11, '0'));
-            multiplierText.text = string.Format("MULTIPLIER: <color=#FFB900>{0:0.00}</color>", GameController.Multiplier);
+            // multiplierText.text = string.Format("MULTIPLIER: <color=#FFB900>{0:0.00}</color>", GameController.Multiplier);
+            
+            if (Time.time > lastFPSTime + 0.5f)
+            {
+                multiplierText.text = string.Format("FPS: <color=#FFB900>{0:0}</color>", (int)(1/Time.unscaledDeltaTime));
+                lastFPSTime = Time.time;
+            }
             
             if (!gameStarted)
             {
